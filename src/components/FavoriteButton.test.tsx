@@ -1,14 +1,16 @@
-import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest'; // Import from vitest instead of jest
-import { render } from '../utils/test-utils.jsx';
+import { describe, it, expect, vi } from 'vitest';
+import { render } from '../utils/test-utils';
 import FavoriteButton from './FavoriteButton';
+import { Movie } from '../types';
 
 describe('FavoriteButton', () => {
-  const mockMovie = {
+  const mockMovie: Movie = {
     imdbID: 'tt0111161',
     Title: 'The Shawshank Redemption',
     Year: '1994',
+    Poster: '',
+    Type: 'movie',
   };
 
   it('renders add to favorites button by default', () => {
@@ -40,8 +42,8 @@ describe('FavoriteButton', () => {
   });
 
   it('prevents event propagation when clicked', () => {
-    const mockClick = vi.fn(); // Use vi.fn() instead of jest.fn()
-    const { container } = render(
+    const mockClick = vi.fn();
+    render(
       <div onClick={mockClick}>
         <FavoriteButton movie={mockMovie} />
       </div>

@@ -4,13 +4,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFavorite, removeFavorite } from '../store/favoritesSlice';
+import { Movie, RootState } from '../types';
 
-const FavoriteButton = ({ movie, size = 'medium' }) => {
+interface FavoriteButtonProps {
+  movie: Movie;
+  size?: 'small' | 'medium' | 'large';
+}
+
+const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movie, size = 'medium' }) => {
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites.favorites);
-  const isFavorite = favorites.some((fav) => fav.imdbID === movie.imdbID);
+  const favorites = useSelector((state: RootState) => state.favorites.favorites);
+  const isFavorite = favorites.some((fav: { imdbID: string }) => fav.imdbID === movie.imdbID);
 
-  const handleToggleFavorite = (e) => {
+  const handleToggleFavorite = (e?: React.MouseEvent): void => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();

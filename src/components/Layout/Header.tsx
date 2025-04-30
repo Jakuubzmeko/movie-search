@@ -5,7 +5,7 @@ import MovieIcon from '@mui/icons-material/Movie';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>

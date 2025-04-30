@@ -2,8 +2,14 @@ import React from 'react';
 import { Card, CardMedia, CardContent, Typography, CardActions, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
+import { Movie } from '../types';
 
-const MovieCard = ({ movie, showActions = true }) => {
+interface MovieCardProps {
+  movie: Movie;
+  showActions?: boolean;
+}
+
+const MovieCard: React.FC<MovieCardProps> = ({ movie, showActions = true }) => {
   return (
     <Card
       sx={{

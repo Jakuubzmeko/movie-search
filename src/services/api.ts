@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { SearchResponse, MovieDetail } from '../types';
 
-const API_KEY = 'ad40c270';
+const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 const BASE_URL = 'http://www.omdbapi.com/';
 
-export const searchMovies = async (query, page = 1) => {
+export const searchMovies = async (query: string, page = 1): Promise<SearchResponse> => {
   try {
-    const response = await axios.get(BASE_URL, {
+    const response = await axios.get<SearchResponse>(BASE_URL, {
       params: {
         apikey: API_KEY,
         s: query,
@@ -19,9 +20,9 @@ export const searchMovies = async (query, page = 1) => {
   }
 };
 
-export const getMovieDetails = async (id) => {
+export const getMovieDetails = async (id: string): Promise<MovieDetail> => {
   try {
-    const response = await axios.get(BASE_URL, {
+    const response = await axios.get<MovieDetail>(BASE_URL, {
       params: {
         apikey: API_KEY,
         i: id,

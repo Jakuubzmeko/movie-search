@@ -1,33 +1,34 @@
-import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render } from '../utils/test-utils';
 import MovieList from './MovieList';
-import { setResults, setQuery, setTotalResults } from '../store/searchSlice';
+import { Movie, RootState } from '../types';
 
 describe('MovieList', () => {
-  const mockMovies = [
+  const mockMovies: Movie[] = [
     {
       imdbID: 'tt0111161',
       Title: 'The Shawshank Redemption',
       Year: '1994',
       Poster: 'https://example.com/poster1.jpg',
+      Type: 'movie',
     },
     {
       imdbID: 'tt0068646',
       Title: 'The Godfather',
       Year: '1972',
       Poster: 'https://example.com/poster2.jpg',
+      Type: 'movie',
     },
   ];
 
   it('displays movies from search results', async () => {
     // Create an initial state that matches what the component expects
-    const preloadedState = {
+    const preloadedState: Partial<RootState> = {
       search: {
         query: 'test query',
         results: mockMovies,
-        totalResults: '2',
+        totalResults: 2,
         loading: false,
         error: null,
         currentPage: 1,
@@ -36,7 +37,7 @@ describe('MovieList', () => {
     };
 
     // Render with the preloaded state
-    const { store } = render(<MovieList />, { preloadedState });
+    render(<MovieList />, { preloadedState });
 
     // Wait for the component to update
     await waitFor(() => {
@@ -48,11 +49,11 @@ describe('MovieList', () => {
 
   it('shows no results message when search returns empty', async () => {
     // Create an initial state with a query but no results
-    const preloadedState = {
+    const preloadedState: Partial<RootState> = {
       search: {
         query: 'nonexistent movie',
         results: [],
-        totalResults: '0',
+        totalResults: 0,
         loading: false,
         error: null,
         currentPage: 1,

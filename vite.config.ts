@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -8,13 +9,13 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom', '@reduxjs/toolkit', '@mui/material'],
-          favorites: ['./src/store/favoritesSlice.js'],
+          favorites: ['./src/store/favoritesSlice.ts'],
           search: [
-            './src/store/searchSlice.js',
-            './src/components/SearchBar.jsx',
-            './src/components/MovieList.jsx',
+            './src/store/searchSlice.ts',
+            './src/components/SearchBar.tsx',
+            './src/components/MovieList.tsx',
           ],
-          detail: ['./src/pages/MovieDetailPage.jsx'],
+          detail: ['./src/pages/MovieDetailPage.tsx'],
         },
       },
     },
@@ -22,7 +23,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTests.js',
+    setupFiles: './src/setupTests.ts',
     coverage: {
       provider: 'v8',
     },

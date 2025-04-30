@@ -1,6 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Movie } from '../types';
 
-const loadFavorites = () => {
+interface FavoritesState {
+  favorites: Movie[];
+}
+
+const loadFavorites = (): Movie[] => {
   try {
     const favorites = localStorage.getItem('favorites');
     return favorites ? JSON.parse(favorites) : [];
@@ -10,7 +15,7 @@ const loadFavorites = () => {
   }
 };
 
-const saveFavorites = (favorites) => {
+const saveFavorites = (favorites: Movie[]): void => {
   try {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   } catch (error) {
@@ -18,20 +23,22 @@ const saveFavorites = (favorites) => {
   }
 };
 
+const initialState: FavoritesState = {
+  favorites: loadFavorites(),
+};
+
 const favoritesSlice = createSlice({
   name: 'favorites',
-  initialState: {
-    favorites: loadFavorites(),
-  },
+  initialState,
   reducers: {
-    addFavorite: (state, action) => {
+    addFavorite: (state, action: PayloadAction<Movie>) => {
       const movie = action.payload;
       if (!state.favorites.find((m) => m.imdbID === movie.imdbID)) {
         state.favorites.push(movie);
         saveFavorites(state.favorites);
       }
     },
-    removeFavorite: (state, action) => {
+    removeFavorite: (state, action: PayloadAction<string>) => {
       const imdbID = action.payload;
       state.favorites = state.favorites.filter((movie) => movie.imdbID !== imdbID);
       saveFavorites(state.favorites);

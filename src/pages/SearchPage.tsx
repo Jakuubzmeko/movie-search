@@ -5,8 +5,8 @@ import MovieList from '../components/MovieList';
 import { injectReducer } from '../store';
 import searchReducer from '../store/searchSlice';
 
-const SearchPage = () => {
-  const [reducerLoaded, setReducerLoaded] = useState(false);
+const SearchPage: React.FC = () => {
+  const [reducerLoaded, setReducerLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     // Inject the search reducer if not already in store

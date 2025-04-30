@@ -44,10 +44,10 @@ npm install
 yarn install
 ```
 
-3. In api.js add your OMDb API key:
+3. Create a .env file in the root directory with your OMDb API key:
 
 ```
-const API_KEY='your_api_key_here'
+VITE_OMDB_API_KEY=your_api_key_here
 ```
 
 You can get an API key from [OMDb API](https://www.omdbapi.com/apikey.aspx)

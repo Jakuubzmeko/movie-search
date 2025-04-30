@@ -11,13 +11,14 @@ import {
   setError,
 } from '../store/searchSlice';
 import { searchMovies } from '../services/api';
+import { RootState } from '../types';
 
-const MovieList = () => {
+const MovieList: React.FC = () => {
   const dispatch = useDispatch();
   const { query, results, totalResults, currentPage, scrollPosition, loading, error } = useSelector(
-    (state) => state.search
+    (state: RootState) => state.search
   );
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Restore scroll position when component mounts
@@ -45,7 +46,7 @@ const MovieList = () => {
       dispatch(appendResults(data));
       dispatch(setCurrentPage(nextPage));
       dispatch(setError(data.Error || null));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(setError('Failed to fetch more movies'));
     } finally {
       dispatch(setLoading(false));

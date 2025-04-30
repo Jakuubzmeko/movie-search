@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Paper,
-  Chip,
-  Button,
-  CircularProgress,
-} from '@mui/material';
+import { Container, Typography, Box, Grid, Paper, Button, CircularProgress } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FavoriteButton from '../components/FavoriteButton';
 import { getMovieDetails } from '../services/api';
+import { MovieDetail } from '../types';
 
-const MovieDetailPage = () => {
+const MovieDetailPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [movie, setMovie] = useState<MovieDetail | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchMovieDetails = async (): Promise<void> => {
+      if (!id) return;
+
       try {
         setLoading(true);
         const data = await getMovieDetails(id);
@@ -33,7 +27,7 @@ const MovieDetailPage = () => {
           setMovie(data);
           setError(null);
         }
-      } catch (err) {
+      } catch (error) {
         setError('Failed to fetch movie details');
       } finally {
         setLoading(false);
@@ -105,34 +99,30 @@ const MovieDetailPage = () => {
             </Typography>
 
             <Box sx={{ mb: 2 }}>
-              {movie.Genre.split(', ').map((genre) => (
-                <Chip key={genre} label={genre} sx={{ mr: 1, mb: 1 }} />
-              ))}
+              <Typography variant="body1" paragraph>
+                {movie.Plot}
+              </Typography>
+
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                <strong>Director:</strong> {movie.Director}
+              </Typography>
+
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                <strong>Writers:</strong> {movie.Writer}
+              </Typography>
+
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                <strong>Actors:</strong> {movie.Actors}
+              </Typography>
+
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                <strong>Language:</strong> {movie.Language}
+              </Typography>
+
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                <strong>Country:</strong> {movie.Country}
+              </Typography>
             </Box>
-
-            <Typography variant="body1" paragraph>
-              {movie.Plot}
-            </Typography>
-
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              <strong>Director:</strong> {movie.Director}
-            </Typography>
-
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              <strong>Writers:</strong> {movie.Writer}
-            </Typography>
-
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              <strong>Actors:</strong> {movie.Actors}
-            </Typography>
-
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              <strong>Language:</strong> {movie.Language}
-            </Typography>
-
-            <Typography variant="body2" sx={{ mb: 2 }}>
-              <strong>Country:</strong> {movie.Country}
-            </Typography>
 
             {movie.Ratings && movie.Ratings.length > 0 && (
               <Box sx={{ mt: 2 }}>

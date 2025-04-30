@@ -1,26 +1,37 @@
-import { render } from '@testing-library/react';
+import React, { ReactElement, ReactNode } from 'react';
+import { render, RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import type { Store } from '@reduxjs/toolkit';
 import { BrowserRouter } from 'react-router-dom';
 import favoritesReducer from '../store/favoritesSlice';
 import searchReducer from '../store/searchSlice';
+import { RootState } from '../types';
+
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
+  preloadedState?: Partial<RootState>;
+  store?: Store;
+}
+
+interface WrapperProps {
+  children: ReactNode;
+}
 
 const renderWithProviders = (
-  ui,
+  ui: ReactElement,
   {
     preloadedState = {},
-
     store = configureStore({
-      reducer: {
+      reducer: combineReducers({
         favorites: favoritesReducer,
         search: searchReducer,
-      },
-      preloadedState,
+      }),
+      preloadedState: preloadedState as Partial<RootState>,
     }),
     ...renderOptions
-  } = {}
+  }: ExtendedRenderOptions = {}
 ) => {
-  const Wrapper = ({ children }) => {
+  const Wrapper: React.FC<WrapperProps> = ({ children }) => {
     return (
       <Provider store={store}>
         <BrowserRouter>{children}</BrowserRouter>
@@ -34,7 +45,5 @@ const renderWithProviders = (
   };
 };
 
-// Re-export everything from testing-library
 export * from '@testing-library/react';
-// Override the render method
 export { renderWithProviders as render };

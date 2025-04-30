@@ -2,9 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Typography, Box, Grid, Alert } from '@mui/material';
 import MovieCard from '../components/MovieCard';
+import { RootState, Movie } from '../types';
 
-const FavoritesPage = () => {
-  const { favorites } = useSelector((state) => state.favorites);
+const FavoritesPage: React.FC = () => {
+  const { favorites } = useSelector((state: RootState) => state.favorites);
 
   return (
     <Container>
@@ -24,7 +25,7 @@ const FavoritesPage = () => {
         </Alert>
       ) : (
         <Grid container spacing={3}>
-          {favorites.map((movie) => (
+          {favorites.map((movie: Movie) => (
             <Grid key={movie.imdbID} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <MovieCard movie={movie} />
             </Grid>

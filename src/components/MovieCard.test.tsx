@@ -3,9 +3,10 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '../utils/test-utils';
 import MovieCard from './MovieCard';
+import { Movie } from '../types';
 
 describe('MovieCard', () => {
-  const mockMovie = {
+  const mockMovie: Movie = {
     imdbID: 'tt0111161',
     Title: 'The Shawshank Redemption',
     Year: '1994',
@@ -24,7 +25,7 @@ describe('MovieCard', () => {
   });
 
   it('renders placeholder image when Poster is N/A', () => {
-    const movieWithoutPoster = { ...mockMovie, Poster: 'N/A' };
+    const movieWithoutPoster: Movie = { ...mockMovie, Poster: 'N/A' };
     render(<MovieCard movie={movieWithoutPoster} />);
 
     const image = screen.getByAltText('The Shawshank Redemption');

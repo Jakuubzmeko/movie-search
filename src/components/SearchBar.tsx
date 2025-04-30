@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import { TextField, InputAdornment, IconButton, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuery, setLoading, setResults, setCurrentPage } from '../store/searchSlice';
 import { searchMovies } from '../services/api';
+import { RootState, SearchResponse } from '../types';
 
-const SearchBar = () => {
+const SearchBar: React.FC = () => {
   const dispatch = useDispatch();
 
   // Get search state safely with fallback for when reducer isn't loaded yet
-  const searchState = useSelector((state) => state.search) || {};
-  const { query = '' } = searchState;
+  const searchState = useSelector((state: RootState) => state.search);
+  const { query = '' } = searchState || {};
 
   // Use local state for input while the reducer is loading
-  const [inputValue, setInputValue] = useState(query);
+  const [inputValue, setInputValue] = useState<string>(query);
 
   // Sync local state with Redux once reducer is loaded
   useEffect(() => {
@@ -23,7 +24,7 @@ const SearchBar = () => {
     }
   }, [query]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (): Promise<void> => {
     if (!inputValue.trim()) return;
 
     dispatch(setLoading(true));
@@ -31,22 +32,22 @@ const SearchBar = () => {
     dispatch(setCurrentPage(1));
 
     try {
-      const data = await searchMovies(inputValue, 1);
+      const data: SearchResponse = await searchMovies(inputValue, 1);
       dispatch(setResults(data));
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Search failed:', error);
     } finally {
       dispatch(setLoading(false));
     }
   };
 
-  const handleClear = () => {
+  const handleClear = (): void => {
     setInputValue('');
     dispatch(setQuery(''));
     dispatch(setResults({ Search: [], totalResults: '0' }));
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
       handleSearch();
     }
@@ -59,7 +60,7 @@ const SearchBar = () => {
         variant="outlined"
         placeholder="Search for movies..."
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
         onKeyPress={handleKeyPress}
         InputProps={{
           startAdornment: (
